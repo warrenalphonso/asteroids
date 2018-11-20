@@ -12,7 +12,7 @@
   <script>
       const FPS = 30; //frames per second
       const FRICTION = 0.7; //friction coefficient of space
-      const ROIDS_JAG = 0.4 //jaggedness of the asteroids (0 = none, 1 = lots)
+      const ROIDS_JAG = .4; //jaggedness of the asteroids (0 = none, 1 = lots)
       const ROIDS_NUM = 3; //starting number of asteroids
       const ROIDS_SIZE = 100; //starting size of asteroids in pixels
       const ROIDS_SPEED = 50; //max starting speed of asteriods in pixels per second
@@ -196,8 +196,22 @@
           ctx.closePath();
           ctx.stroke();
           //move the asteroid
+          roids[i].x += roids[i].xv;
+          roids[i].y += roids[i].yv;
 
           //hands edge of screen
+          if (roids[i].x < 0 - roids[i].r){
+            roids[i].x = canv.width + roids[i].r;
+          } else if (roids[i].x > canv.width + roids[i].r){
+            roids[i].x = 0 - roids[i].r
+          };
+          if (roids[i].y < 0 - roids[i].r){
+            roids[i].y = canv.height + roids[i].r;
+          } else if (roids[i].y > canv.height + roids[i].r){
+            roids[i].y = 0 - roids[i].r
+          };
+
+
         };
 
         //rotate the ship
