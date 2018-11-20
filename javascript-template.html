@@ -2,31 +2,36 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset='UTF-8'>
     <title>Asteroids</title>
     <style></style>
 </head>
 
 <body>
-  <canvas id="gameCanvas" width = "700" height = "500"></canvas>
+  <canvas id='gameCanvas' width = '700' height = '500'></canvas>
   <script>
       const FPS = 30; //frames per second
       const SHIP_SIZE = 30; //ship height in pixels
       const TURN_SPEED = 360; //turn speed in degrees per second
       /**@type {HTMLCanvasElement} */
-      var canv = document.getElementById("gameCanvas");
-      var ctx = canv.getContext("2d");
+      var canv = document.getElementById('gameCanvas');
+      var ctx = canv.getContext('2d');
       var ship = {
         x: canv.width / 2,
         y: canv.height / 2,
         r: SHIP_SIZE / 2,
         a: 90 / 180 * Math.PI, //convert to radians
-        rot: 0
+        rot: 0,
+        thrusting: false,
+        thrust: {
+          x: 0,
+          y: 0,
+        }
       }
 
       //set up event handlers
       document.addEventListener('keydown', keyDown);
-      document.addEventListener('keyUp', keyUP);
+      document.addEventListener('keyup', keyUp);
 
       // set up the game loop
       setInterval(update, 1000 / FPS);
@@ -34,23 +39,36 @@
       function keyDown(/** @type (KeyboardEvent) */ ev){
         switch(ev.keyCode){
           case 37: //left arrow (rotate ship left)
+            ship.rot = TURN_SPEED / 180 * Math.PI / FPS;
+            break;
+          case 38: //up arrow (thrust ship)
+            break;
+          case 39: //right arrow (rotate ship right)
+            ship.rot = -TURN_SPEED / 180 * Math.PI / FPS;
+            break;
 
+        }
+      }
+      function keyUp(/** @type (KeyboardEvent) */ ev){
+        switch(ev.keyCode){
+          case 37: //left arrow (stop rotate ship left)
+            ship.rot = 0;
             break;
-          case 38: //right arrow (rotate ship right)
+          case 38: //up arrow (stop thrust ship)
             break;
-          case 39: //up arrow (thrust ship forward)
+          case 39: //right arrow (stop rotate ship right)
+            ship.rot = 0;
             break;
-
         }
       }
 
       function update() {
         // draw space
-        ctx.fillStyle = "black";
+        ctx.fillStyle = 'black';
         ctx.fillRect(0,0, canv.width, canv.height);
 
         //draw trianglular ship
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = 'white';
         ctx.lineWidth = SHIP_SIZE / 20;
         ctx.beginPath();
         ctx.moveTo( //nose of the ship
@@ -69,7 +87,7 @@
         ctx.stroke();
 
         //rotate the ship
-
+        ship.a += ship.rot;
 
         //move the ship
 
