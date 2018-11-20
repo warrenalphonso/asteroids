@@ -12,6 +12,7 @@
   <script>
       const FPS = 30; //frames per second
       const SHIP_SIZE = 30; //ship height in pixels
+      const SHIP_THRUST = 5; //acceleration of ship in pixels per second per second
       const TURN_SPEED = 360; //turn speed in degrees per second
       /**@type {HTMLCanvasElement} */
       var canv = document.getElementById('gameCanvas');
@@ -42,6 +43,7 @@
             ship.rot = TURN_SPEED / 180 * Math.PI / FPS;
             break;
           case 38: //up arrow (thrust ship)
+            ship.thrusting = true;
             break;
           case 39: //right arrow (rotate ship right)
             ship.rot = -TURN_SPEED / 180 * Math.PI / FPS;
@@ -55,6 +57,7 @@
             ship.rot = 0;
             break;
           case 38: //up arrow (stop thrust ship)
+            ship.thrusting = false;
             break;
           case 39: //right arrow (stop rotate ship right)
             ship.rot = 0;
@@ -66,6 +69,12 @@
         // draw space
         ctx.fillStyle = 'black';
         ctx.fillRect(0,0, canv.width, canv.height);
+
+        // thrust the ship
+        if (ship.thrusting){
+          ship.thrust.x += SHIP_THRUST * Math.cos(ship.a) / FPS;
+          ship.thrust.y -= SHIP_THRUST * Math.sin(ship.a) / FPS;
+        }
 
         //draw trianglular ship
         ctx.strokeStyle = 'white';
@@ -90,6 +99,8 @@
         ship.a += ship.rot;
 
         //move the ship
+        ship.x += ship.thrust.x;
+        ship.y += ship.thrust.y;
 
         //center dot
         ctx.fillStyle ='red';
