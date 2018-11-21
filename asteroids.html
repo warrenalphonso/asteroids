@@ -31,13 +31,18 @@
       const SHIP_EXPLODE_DUR = 0.3 //duration of ship's explosion
       const SHIP_INV_DUR = 3; //duration of ship's invisibility duration in seconds
       const SHIP_BLINK_DUR = .1; //duration of ship's blink during invisbility in seconds
-      const SOUND_ON = true;
-      const MUSIC_ON = true;
       const TURN_SPEED = 360; //turn speed in degrees per second
+
+      //developer flags
+      const AUTOMATION_ON = true; //set up neural network
       const SHOW_BOUNDING = false; // show or hide collision bounding
       const SHOW_CENTER_DOT = false; //show or hide ship's center dot
       const TEXT_FADE_TIME = 2.5; //text fade time in seconds
       const TEXT_SIZE = 40; //text size in pixels
+      const SOUND_ON = false;
+      const MUSIC_ON = false;
+
+
       /**@type {HTMLCanvasElement} */
       var canv = document.getElementById('gameCanvas');
       var ctx = canv.getContext('2d');
@@ -56,6 +61,10 @@
       var level, lives, roids, score, scoreHigh, ship, text, textAlpha;
       newGame();
 
+      //set up the neural network
+      if (AUTOMATION_ON){
+        //TODO neural network
+      }
       //set up event handlers
       document.addEventListener('keydown', keyDown);
       document.addEventListener('keyup', keyUp);
@@ -153,7 +162,7 @@
       }
 
       function keyDown(/** @type (KeyboardEvent) */ ev){
-        if (ship.dead){
+        if (ship.dead || AUTOMATION_ON){
           return;
         }
         switch(ev.keyCode){
@@ -173,7 +182,7 @@
       };
 
       function keyUp(/** @type (KeyboardEvent) */ ev){
-        if (ship.dead){
+        if (ship.dead || AUTOMATION_ON){
           return;
         }
         switch(ev.keyCode){
@@ -325,11 +334,14 @@
           }
         }
 
-
-
       function update() {
         var blinkOn = ship.blinkNum % 2 == 0;
         var exploding = ship.explodeTime > 0;
+
+        //use the neural network to rotate and shoot
+        if (AUTOMATION_ON){
+          //TODO control ship
+        }
 
         //tick the music
         music.tick()
