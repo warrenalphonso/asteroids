@@ -5,8 +5,8 @@ class NeuralNetwork{
     this._numInputs = numInputs;
     this._numHidden = numHidden;
     this._numOutputs = numOutputs;
-    this._weights0 = new Matrix(this._numInputs, this.numHidden);
-    this._weights1 = new Matrix(this._numHidden, this.numOutputs);
+    this._weights0 = new Matrix(this._numInputs, this._numHidden);
+    this._weights1 = new Matrix(this._numHidden, this._numOutputs);
 
     //randomise initial weights
     this._weights0.randomWeights();
@@ -31,13 +31,37 @@ class NeuralNetwork{
 
   feedForward(inputArray){
     //convert input array to a matrix
+    let inputs = Matrix.convertFromArray(inputArray);
+    console.log('inputs');
+    console.table(inputs.data);
+
     //find the hidden values and apply activation function
+    let hidden = Matrix.dot(inputs, this.weights0);
+    console.log('hidden');
+    console.table(hidden.data);
+
+    hidden = Matrix.map(hidden, x => sigmoid(x));
+    console.log('hidden');
+    console.table(hidden.data);
+
     //find the output values and appy the activation function
-    //apply bias 
+    let outputs = Matrix.dot(hidden, this.weights1);
+    console.log('outputs');
+    console.table(outputs.data);
+
+    outputs = Matrix.map(outputs, x => sigmoid(x));
+    console.log('outputs');
+    console.table(outputs.data);
+
+    return outputs;
+
+    //apply bias
   }
 }
 
-
+function sigmoid(x){
+  return 1 / (1 + Math.exp(-x));
+}
 /***********
 *MATRIX FUNCTIONS
 ************/
