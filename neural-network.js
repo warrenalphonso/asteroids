@@ -2,6 +2,8 @@
 
 class NeuralNetwork{
   constructor(numInputs, numHidden, numOutputs){
+    this._hidden = [];
+    this._inputs = [];
     this._numInputs = numInputs;
     this._numHidden = numHidden;
     this._numOutputs = numOutputs;
@@ -13,12 +15,28 @@ class NeuralNetwork{
     this._weights1.randomWeights();
   }
 
+  get hidden(){
+    return this._hidden;
+  }
+
+  get inputs(){
+    return this._inputs;
+  }
+
   get weights0(){
     return this._weights0;
   }
 
   get weights1(){
     return this._weights1;
+  }
+
+  set hidden(hidden){
+    this._hidden = hidden;
+  }
+
+  set inputs(inputs){
+    this._inputs = inputs;
   }
 
   set weights0(weights){
@@ -31,14 +49,14 @@ class NeuralNetwork{
 
   feedForward(inputArray){
     //convert input array to a matrix
-    let inputs = Matrix.convertFromArray(inputArray);
+    this.inputs = Matrix.convertFromArray(inputArray);
 
     //find the hidden values and apply activation function
-    let hidden = Matrix.dot(inputs, this.weights0);
-    hidden = Matrix.map(hidden, x => sigmoid(x));
+    this.hidden = Matrix.dot(this.inputs, this.weights0);
+    this.hidden = Matrix.map(this.hidden, x => sigmoid(x));
 
     //find the output values and appy the activation function
-    let outputs = Matrix.dot(hidden, this.weights1);
+    let outputs = Matrix.dot(this.hidden, this.weights1);
     outputs = Matrix.map(outputs, x => sigmoid(x));
 
     return outputs;
@@ -49,30 +67,39 @@ class NeuralNetwork{
   train(inputArray, targetArray){
     //feed the input data through the network
     let outputs = this.feedForward(inputArray);
-    console.log('outputs');
-    console.table(outputs.data);
 
     //calculate the output errors (target - output)
     let targets = Matrix.convertFromArray(targetArray);
-    console.log('targets');
-    console.table(targets.data);
 
     let outputErrors = Matrix.subtract(targets, outputs)
-    console.log('outputErrors');
-    console.table(outputErrors.data);
-
-
 
     //calculae the delta (errors * derivatives of the output)
+    let outputDerivs = Matrix.map(outputs, x => sigmoid(x, true));
+    let outputDeltas = Matrix.multiply(outputErrors, outputDerivs);
+
     //calculate hidden layer errors (delta 'dot' transpose of weights1)
+    let weights1T = Matrix.transpose(this.weights1);
+    let hiddenErrors = Matrix.dot(outputDeltas, weights1T);
+
     //calculate the hidden deltas (errors * derivative of hidden)
+    let hiddenDerivs = Matrix.map(this.hidden, x => sigmoid(x, true));
+    let hiddenDeltas = Matrix.multiply(hiddenErrors, hiddenDerivs);
+
     //update the weights (add transpose of layers 'dot' deltas)
+    let hiddenT = Matrix.transpose(this.hidden);
+    this.weigths1 = Matrix.add(this.weights1, Matrix.dot(hiddenT, outputDeltas));
+    let inputsT = Matrix.transpose(this.inputs);
+    this.weigths0 = Matrix.add(this.weights0, Matrix.dot(inputsT, hiddenDeltas));
+
     //update bias
   }
 
 }
 
-function sigmoid(x){
+function sigmoid(x, deriv = false){
+  if (deriv){
+    return x * (1 - x); //where x = sigmoid(x)
+  }
   return 1 / (1 + Math.exp(-x));
 }
 /***********
