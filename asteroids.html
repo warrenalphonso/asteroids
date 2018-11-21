@@ -70,7 +70,7 @@
       var nn;
       if (AUTOMATION_ON){
         nn = new NeuralNetwork(NUM_INPUTS, NUM_HIDDEN, NUM_OUTPUTS);
-        nn.feedForward([4, 5]);
+        nn.train([0, 1], [1]);
       }
       //set up event handlers
       document.addEventListener('keydown', keyDown);

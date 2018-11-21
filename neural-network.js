@@ -32,31 +32,44 @@ class NeuralNetwork{
   feedForward(inputArray){
     //convert input array to a matrix
     let inputs = Matrix.convertFromArray(inputArray);
-    console.log('inputs');
-    console.table(inputs.data);
 
     //find the hidden values and apply activation function
     let hidden = Matrix.dot(inputs, this.weights0);
-    console.log('hidden');
-    console.table(hidden.data);
-
     hidden = Matrix.map(hidden, x => sigmoid(x));
-    console.log('hidden');
-    console.table(hidden.data);
 
     //find the output values and appy the activation function
     let outputs = Matrix.dot(hidden, this.weights1);
-    console.log('outputs');
-    console.table(outputs.data);
-
     outputs = Matrix.map(outputs, x => sigmoid(x));
-    console.log('outputs');
-    console.table(outputs.data);
 
     return outputs;
 
     //apply bias
   }
+
+  train(inputArray, targetArray){
+    //feed the input data through the network
+    let outputs = this.feedForward(inputArray);
+    console.log('outputs');
+    console.table(outputs.data);
+
+    //calculate the output errors (target - output)
+    let targets = Matrix.convertFromArray(targetArray);
+    console.log('targets');
+    console.table(targets.data);
+
+    let outputErrors = Matrix.subtract(targets, outputs)
+    console.log('outputErrors');
+    console.table(outputErrors.data);
+
+
+
+    //calculae the delta (errors * derivatives of the output)
+    //calculate hidden layer errors (delta 'dot' transpose of weights1)
+    //calculate the hidden deltas (errors * derivative of hidden)
+    //update the weights (add transpose of layers 'dot' deltas)
+    //update bias
+  }
+
 }
 
 function sigmoid(x){
