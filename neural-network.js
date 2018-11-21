@@ -1,5 +1,8 @@
 'use strict';
 
+const LOG_ON = true; //whether or not to show error logging
+const LOG_FREQ = 100000; //how often to show error logs (in iterations)
+
 class NeuralNetwork{
   constructor(numInputs, numHidden, numOutputs){
     this._inputs = [];
@@ -12,6 +15,9 @@ class NeuralNetwork{
     this._weights0 = new Matrix(this._numInputs, this._numHidden);
     this._weights1 = new Matrix(this._numHidden, this._numOutputs);
 
+    //error logging
+    this._logCount = LOG_FREQ;
+
     //randomise initial weights
     this._bias0.randomWeights();
     this._bias1.randomWeights();
@@ -23,48 +29,56 @@ class NeuralNetwork{
     return this._hidden;
   }
 
-  get inputs(){
-    return this._inputs;
-  }
-
-  get weights0(){
-    return this._weights0;
-  }
-
-  get weights1(){
-    return this._weights1;
-  }
-
-  get bias0(){
-    return this._bias0;
-  }
-
-  get bias1(){
-    return this._bias1;
-  }
-
   set hidden(hidden){
     this._hidden = hidden;
+  }
+
+  get inputs(){
+    return this._inputs;
   }
 
   set inputs(inputs){
     this._inputs = inputs;
   }
 
+  get weights0(){
+    return this._weights0;
+  }
+
   set weights0(weights){
     this._weights0 = weights;
+  }
+
+  get weights1(){
+    return this._weights1;
   }
 
   set weights1(weights){
     this._weights1 = weights;
   }
 
+  get bias0(){
+    return this._bias0;
+  }
+
   set bias0(bias0){
     this._bias0 = bias0;
   }
 
+  get bias1(){
+    return this._bias1;
+  }
+
   set bias1(bias1){
     this._bias1 = bias1;
+  }
+
+  get logCount(){
+    return this._logCount;
+  }
+
+  set logCount(logCount){
+    this._logCount = logCount;
   }
 
 
@@ -94,6 +108,17 @@ class NeuralNetwork{
     //calculate the output errors (target - output)
     let targets = Matrix.convertFromArray(targetArray);
     let outputErrors = Matrix.subtract(targets, outputs);
+
+    //error logging
+    if (LOG_ON){
+      if (this.logCount == LOG_FREQ){
+        console.log('error = ' + outputErrors.data[0][0]);
+      }
+      this.logCount--;
+      if (this.logCount == 0){
+        this.logCount = LOG_FREQ;
+      }
+    }
 
     //calculae the delta (errors * derivatives of the output)
     let outputDerivs = Matrix.map(outputs, x => sigmoid(x, true));
