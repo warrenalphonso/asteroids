@@ -47,6 +47,7 @@
       const NUM_INPUTS = 2;
       const NUM_HIDDEN = 5;
       const NUM_OUTPUTS = 1;
+      const NUM_SAMPLES = 100000;
 
       /**@type {HTMLCanvasElement} */
       var canv = document.getElementById('gameCanvas');
@@ -70,7 +71,26 @@
       var nn;
       if (AUTOMATION_ON){
         nn = new NeuralNetwork(NUM_INPUTS, NUM_HIDDEN, NUM_OUTPUTS);
-        nn.train([0, 1], [1]);
+
+        //train the network
+        for (let i = 0; i < NUM_SAMPLES; i++){
+          //TEST XOR gate logic
+          // 0 0 = 0
+          // 0 1 = 1
+          // 1 0 = 1
+          // 1 1 = 0
+
+          let input0 = Math.round(Math.random());
+          let input1 = Math.round(Math.random());
+          let output = input0 == input1 ? 0 : 1;
+          nn.train([input0, input1], [output]);
+        }
+        //test output
+        console.log('0, 0 = ' + nn.feedForward([0,0]).data)
+        console.log('0, 1 = ' + nn.feedForward([0,1]).data)
+        console.log('1, 0 = ' + nn.feedForward([1,0]).data)
+        console.log('1, 1 = ' + nn.feedForward([1,1]).data)
+
       }
       //set up event handlers
       document.addEventListener('keydown', keyDown);

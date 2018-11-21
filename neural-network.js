@@ -2,15 +2,19 @@
 
 class NeuralNetwork{
   constructor(numInputs, numHidden, numOutputs){
-    this._hidden = [];
     this._inputs = [];
+    this._hidden = [];
     this._numInputs = numInputs;
     this._numHidden = numHidden;
     this._numOutputs = numOutputs;
+    this._bias0 = new Matrix(1, this._numHidden);
+    this._bias1 = new Matrix(1, this._numOutputs);
     this._weights0 = new Matrix(this._numInputs, this._numHidden);
     this._weights1 = new Matrix(this._numHidden, this._numOutputs);
 
     //randomise initial weights
+    this._bias0.randomWeights();
+    this._bias1.randomWeights();
     this._weights0.randomWeights();
     this._weights1.randomWeights();
   }
@@ -31,6 +35,14 @@ class NeuralNetwork{
     return this._weights1;
   }
 
+  get bias0(){
+    return this._bias0;
+  }
+
+  get bias1(){
+    return this._bias1;
+  }
+
   set hidden(hidden){
     this._hidden = hidden;
   }
@@ -47,16 +59,27 @@ class NeuralNetwork{
     this._weights1 = weights;
   }
 
+  set bias0(bias0){
+    this._bias0 = bias0;
+  }
+
+  set bias1(bias1){
+    this._bias1 = bias1;
+  }
+
+
   feedForward(inputArray){
     //convert input array to a matrix
     this.inputs = Matrix.convertFromArray(inputArray);
 
     //find the hidden values and apply activation function
     this.hidden = Matrix.dot(this.inputs, this.weights0);
+    this.hidden = Matrix.add(this.hidden, this.bias0); //apply bias
     this.hidden = Matrix.map(this.hidden, x => sigmoid(x));
 
     //find the output values and appy the activation function
     let outputs = Matrix.dot(this.hidden, this.weights1);
+    outputs = Matrix.add(outputs, this.bias1); //apply bias
     outputs = Matrix.map(outputs, x => sigmoid(x));
 
     return outputs;
@@ -70,8 +93,7 @@ class NeuralNetwork{
 
     //calculate the output errors (target - output)
     let targets = Matrix.convertFromArray(targetArray);
-
-    let outputErrors = Matrix.subtract(targets, outputs)
+    let outputErrors = Matrix.subtract(targets, outputs);
 
     //calculae the delta (errors * derivatives of the output)
     let outputDerivs = Matrix.map(outputs, x => sigmoid(x, true));
@@ -87,11 +109,13 @@ class NeuralNetwork{
 
     //update the weights (add transpose of layers 'dot' deltas)
     let hiddenT = Matrix.transpose(this.hidden);
-    this.weigths1 = Matrix.add(this.weights1, Matrix.dot(hiddenT, outputDeltas));
+    this.weights1 = Matrix.add(this.weights1, Matrix.dot(hiddenT, outputDeltas));
     let inputsT = Matrix.transpose(this.inputs);
-    this.weigths0 = Matrix.add(this.weights0, Matrix.dot(inputsT, hiddenDeltas));
+    this.weights0 = Matrix.add(this.weights0, Matrix.dot(inputsT, hiddenDeltas));
 
     //update bias
+    this.bias1 = Matrix.add(this.bias1, outputDeltas);
+    this.bias0 = Matrix.add(this.bias0, hiddenDeltas);
   }
 
 }
