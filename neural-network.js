@@ -1,5 +1,43 @@
 'use strict';
 
+class NeuralNetwork{
+  constructor(numInputs, numHidden, numOutputs){
+    this._numInputs = numInputs;
+    this._numHidden = numHidden;
+    this._numOutputs = numOutputs;
+    this._weights0 = new Matrix(this._numInputs, this.numHidden);
+    this._weights1 = new Matrix(this._numHidden, this.numOutputs);
+
+    //randomise initial weights
+    this._weights0.randomWeights();
+    this._weights1.randomWeights();
+  }
+
+  get weights0(){
+    return this._weights0;
+  }
+
+  get weights1(){
+    return this._weights1;
+  }
+
+  set weights0(weights){
+    this._weights0 = weights;
+  }
+
+  set weights1(weights){
+    this._weights1 = weights;
+  }
+
+  feedForward(inputArray){
+    //convert input array to a matrix
+    //find the hidden values and apply activation function
+    //find the output values and appy the activation function
+    //apply bias 
+  }
+}
+
+
 /***********
 *MATRIX FUNCTIONS
 ************/
