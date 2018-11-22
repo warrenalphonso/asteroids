@@ -11,7 +11,7 @@ You can change `NUM_SAMPLES` to vary training iterations and `OUTPUT_THRESHHOLD`
 
 ### Automated player with 1,000,000 training iterations
 
-![](asteroids_automated.gif) 
+![](sounds/asteroids_automated.gif) 
 
 ## Acknowledgements
 
