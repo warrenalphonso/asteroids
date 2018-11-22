@@ -9,7 +9,8 @@ Use the left and right arrow keys to rotate the ship. Use the up arrow key to mo
 
 You can change `NUM_SAMPLES` to vary training iterations and `OUTPUT_THRESHHOLD` to change the necessary accuracy in order for the spaceship to commit to a turn.
 
-![](asteroids_automated.gif)
+<center> Automated player with 1,000,000 training iterations </center>
+<center>![](asteroids_automated.gif)</center>
 
 ## Acknowledgements
 
