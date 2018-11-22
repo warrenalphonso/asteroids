@@ -11,9 +11,9 @@
 <body>
   <canvas id='gameCanvas' width = '700' height = '500'></canvas>
   <script>
-      const FPS = 90; //frames per second
+      const FPS = 60; //frames per second
       const FRICTION = 0.7; //friction coefficient of space
-      const GAME_LIVES = 1; //starting number of lives
+      const GAME_LIVES = 3; //starting number of lives
       const LASER_MAX = 10; //maximum number of lasers on screen at once
       const LASER_SPEED = 500; //speed of lasers in pixels per second
       const LASER_DIST = 0.6 //max distance laser can travel as fraction of screen width
@@ -47,12 +47,11 @@
       const NUM_INPUTS = 4;
       const NUM_HIDDEN = 10;
       const NUM_OUTPUTS = 1;
-      const NUM_SAMPLES = 10000000; //number of training samples
+      const NUM_SAMPLES = 1000000; //number of training samples
       const OUTPUT_LEFT = 0; //expected neural output for turning left
       const OUTPUT_RIGHT = 1; //expected neural output for turning right
-      const OUTPUT_THRESHHOLD = 0.05; //how close prediction must be to commit to a turn
+      const OUTPUT_THRESHHOLD = 0.01; //how close prediction must be to commit to a turn
       const RATE_OF_FIRE = 30; //shots per second
-
 
       /**@type {HTMLCanvasElement} */
       var canv = document.getElementById('gameCanvas');
@@ -201,7 +200,6 @@
         );
         ctx.closePath();
         ctx.stroke();
-
       }
 
       function explodeShip(){
@@ -446,7 +444,9 @@
           //shoot all the time
           if (aiShootTime == 0){
             aiShootTime = Math.ceil(FPS / RATE_OF_FIRE);
-            ship.canShoot = true;
+            if (!ship.dead){
+              ship.canShoot = true;
+            };
             shootLaser();
           } else {
             aiShootTime--;
