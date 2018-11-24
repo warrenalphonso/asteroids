@@ -46,9 +46,9 @@
 
       //neural network parameters
       const NUM_INPUTS = 4;
-      const NUM_HIDDEN = 100;
+      const NUM_HIDDEN = 10;
       const NUM_OUTPUTS = 1;
-      const NUM_SAMPLES = 100000000; //number of training samples
+      const NUM_SAMPLES = 100000; //number of training samples
       const OUTPUT_LEFT = 0; //expected neural output for turning left
       const OUTPUT_RIGHT = 1; //expected neural output for turning right
       const OUTPUT_THRESHHOLD = 0.01; //how close prediction must be to commit to a turn
@@ -412,19 +412,19 @@
         if (AUTOMATION_ON){
 
           //compute the closest asteroid
-          let c = 0; //closest index
-          let dist0 = distBetweenPoints(ship.x, ship.y, roids[0].x, roids[0].y);
-          for (let i = 1; i < roids.length; i++){
-            let dist1 = distBetweenPoints(ship.x, ship.y, roids[i].x, roids[i].y);
-            if (dist1 < dist0){
-              dist0 = dist1;
-              c = i;
-            }
-          }
+          // let c = 0; //closest index
+          // let dist0 = distBetweenPoints(ship.x, ship.y, roids[0].x, roids[0].y);
+          // for (let i = 1; i < roids.length; i++){
+          //   let dist1 = distBetweenPoints(ship.x, ship.y, roids[i].x, roids[i].y);
+          //   if (dist1 < dist0){
+          //     dist0 = dist1;
+          //     c = i;
+          //   }
+          // }
 
           //compute closest asteroids within a radius
           var closest_asteroids = [];
-          for (let i = 0; i < roids.length; i ++){
+          for (let i = 0; i < roids.length; i++){
             let disti = distBetweenPoints(ship.x, ship.y, roids[i].x, roids[i].y);
             if (disti < IMMEDIATE_RADIUS){
               closest_asteroids.push([i, disti]);
@@ -433,9 +433,16 @@
 
           //sort closest_asteroids in ascending order
           closest_asteroids.sort(function(a, b){return a[1] - b[1]});
+          // console.log(closest_asteroids[0][0])
+          c = closest_asteroids[0][0]
 
           //check which asteroids will hit within closest_asteroids
+          // for (let i = 0; i < closest_asteroids.length; i++){
+          //   if
+          // }
 
+          //function to check if asteroid will collide with ship
+          // function Colliding(ax, ay, a)
 
           //make a prediction based on current data
           let ax = roids[c].x;
