@@ -46,13 +46,14 @@
 
       //neural network parameters
       const NUM_INPUTS = 4;
-      const NUM_HIDDEN = 10;
+      const NUM_HIDDEN = 100;
       const NUM_OUTPUTS = 1;
-      const NUM_SAMPLES = 1000000; //number of training samples
+      const NUM_SAMPLES = 100000000; //number of training samples
       const OUTPUT_LEFT = 0; //expected neural output for turning left
       const OUTPUT_RIGHT = 1; //expected neural output for turning right
       const OUTPUT_THRESHHOLD = 0.01; //how close prediction must be to commit to a turn
       const RATE_OF_FIRE = 30; //shots per second
+      const IMMEDIATE_RADIUS = 100; //radius within which neural network prioritizes asteroid on path to hit
 
       /**@type {HTMLCanvasElement} */
       var canv = document.getElementById('gameCanvas');
@@ -422,13 +423,19 @@
           }
 
           //compute closest asteroids within a radius
-          indices_of_closest_asteroids = [];
+          var closest_asteroids = [];
           for (let i = 0; i < roids.length; i ++){
             let disti = distBetweenPoints(ship.x, ship.y, roids[i].x, roids[i].y);
             if (disti < IMMEDIATE_RADIUS){
-              indices_of_closest_asteroids.append(i);
+              closest_asteroids.push([i, disti]);
             }
           }
+
+          //sort closest_asteroids in ascending order
+          closest_asteroids.sort(function(a, b){return a[1] - b[1]});
+
+          //check which asteroids will hit within closest_asteroids
+
 
           //make a prediction based on current data
           let ax = roids[c].x;
