@@ -40,8 +40,9 @@
       const SHOW_CENTER_DOT = false; //show or hide ship's center dot
       const TEXT_FADE_TIME = 2.5; //text fade time in seconds
       const TEXT_SIZE = 40; //text size in pixels
-      const SOUND_ON = false;
-      const MUSIC_ON = false;
+      const SOUND_ON = true;
+      const MUSIC_ON = true;
+      const GAME_SPEED = 10; // 1000 for normal; 10 for fast forward
 
       //neural network parameters
       const NUM_INPUTS = 4;
@@ -117,7 +118,7 @@
       document.addEventListener('keyup', keyUp);
 
       // set up the game loop
-      setInterval(update, 1000 / FPS);
+      setInterval(update, GAME_SPEED / FPS);
 
       function angleToPoint(x, y, bearing, targetX, targetY){
         let angleToTarget = Math.atan2(-targetY + y, targetX - x);
