@@ -42,7 +42,7 @@
       const TEXT_SIZE = 40; //text size in pixels
       const SOUND_ON = true;
       const MUSIC_ON = true;
-      const GAME_SPEED = 10; // 1000 for normal; 10 for fast forward
+      const GAME_SPEED = 1000; // 1000 for normal; 10 for fast forward
 
       //neural network parameters
       const NUM_INPUTS = 4;
@@ -418,6 +418,15 @@
             if (dist1 < dist0){
               dist0 = dist1;
               c = i;
+            }
+          }
+
+          //compute closest asteroids within a radius
+          indices_of_closest_asteroids = [];
+          for (let i = 0; i < roids.length; i ++){
+            let disti = distBetweenPoints(ship.x, ship.y, roids[i].x, roids[i].y);
+            if (disti < IMMEDIATE_RADIUS){
+              indices_of_closest_asteroids.append(i);
             }
           }
 
