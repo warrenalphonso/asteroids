@@ -423,6 +423,7 @@
           // }
 
           //compute closest asteroids within a radius
+          let c = null;
           var closest_asteroids = [];
           for (let i = 0; i < roids.length; i++){
             let disti = distBetweenPoints(ship.x, ship.y, roids[i].x, roids[i].y);
@@ -433,16 +434,34 @@
 
           //sort closest_asteroids in ascending order
           closest_asteroids.sort(function(a, b){return a[1] - b[1]});
-          c = closest_asteroids[0][0]
+          // c = closest_asteroids[0][0]
 
           //check which asteroids will hit within closest_asteroids
-          // for (let i = 0; i < closest_asteroids.length; i++){
-          //   if
-          // }
+          for (let i = 0; i < closest_asteroids.length; i++){
+            if (Colliding(ship.x, ship.y, closest_asteroids[i][0].x, closest_asteroids[i][0].y, closest_asteroids[i][0].r, closest_asteroids[i][0].xv, closest_asteroids[i][0].yv)){
+              c = i;
+            }
+          }
 
-          //function to check if asteroid will collide with ship
-          // function Colliding(ax, ay, a)
+          if (c == null){
+            c = closest_asteroids[0][0]
+          }
 
+          //function to check if asteroid will collide with ship by comparing
+          //slope of line between asteroid and ship to slope of velociy of
+          //asteroid adjusted for radii
+          function Colliding(sx, sy, ax, ay, ar, axv, ayv){
+            //ship radius = SHIP_SIZE / 2
+            let centers_slope = (sy - ay) / (sx - ax); //slope of line connecting centers
+            let vel_slope = ayv / axv; //slope of asteroid velocity direction
+            let size = ROIDS_SIZE / ar;
+            // let size = Math.pow((ROIDS_SIZE / ar), -1);
+            if (centers_slope >= 0.1 * size * vel_slope && 0.1 * size * centers_slope <=  vel_slope){
+              return true;
+            } else {
+              return false;
+            }
+          }
 
           //make a prediction based on current data
           let ax = roids[c].x;
