@@ -438,7 +438,8 @@
 
           //check which asteroids will hit within closest_asteroids
           for (let i = 0; i < closest_asteroids.length; i++){
-            if (Colliding(ship.x, ship.y, closest_asteroids[i][0].x, closest_asteroids[i][0].y, closest_asteroids[i][0].r, closest_asteroids[i][0].xv, closest_asteroids[i][0].yv)){
+            if (Colliding(ship.x, ship.y, closest_asteroids[i][0].x, closest_asteroids[i][0].y,
+              closest_asteroids[i][0].r, closest_asteroids[i][0].xv, closest_asteroids[i][0].yv)){
               c = i;
             }
           }
@@ -452,13 +453,14 @@
           //asteroid adjusted for radii
           function Colliding(sx, sy, ax, ay, ar, axv, ayv){
             //ship radius = SHIP_SIZE / 2
-            let centers_slope = (sy - ay) / (sx - ax); //slope of line connecting centers
-            let vel_slope = ayv / axv; //slope of asteroid velocity direction
-            let size = ROIDS_SIZE / ar;
-            if (centers_slope >= 0.1 * size * vel_slope && 0.1 * size * centers_slope <=  vel_slope){
+            //slope of line connecting centers
+            let centers_slope = (sy - ay) / (sx - ax);
+            //slope of asteroid velocity direction
+            let vel_slope = ayv / axv;
+            //offset by which to compare slopes (large  asteroids can match slope less)
+            let offset = ROIDS_SIZE / ar;
+            if (centers_slope >= 0.08 * offset * vel_slope && 0.08 * offset * centers_slope <= vel_slope){
               return true;
-            } else {
-              return false;
             }
           }
 
