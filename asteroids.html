@@ -19,7 +19,7 @@
       const LASER_DIST = 0.6 //max distance laser can travel as fraction of screen width
       const LASER_EXPLODE_DUR = 0.1 //duration of lasers' explosion in seconds
       const ROIDS_JAG = .4; //jaggedness of the asteroids (0 = none, 1 = lots)
-      const ROIDS_NUM = 5; //starting number of asteroids
+      const ROIDS_NUM = 30; //starting number of asteroids
       const ROIDS_SIZE = 100; //starting size of asteroids in pixels
       const ROIDS_SPEED = 50; //max starting speed of asteriods in pixels per second
       const ROIDS_VERT = 10; //average number of vertices on each asteroid
@@ -42,13 +42,13 @@
       const TEXT_SIZE = 40; //text size in pixels
       const SOUND_ON = true;
       const MUSIC_ON = true;
-      const GAME_SPEED = 1000; // 1000 for normal; 10 for fast forward
+      const GAME_SPEED = 10; // 1000 for normal; 10 for fast forward
 
       //neural network parameters
       const NUM_INPUTS = 4;
       const NUM_HIDDEN = 10;
       const NUM_OUTPUTS = 1;
-      const NUM_SAMPLES = 100000; //number of training samples
+      const NUM_SAMPLES = 1000000; //number of training samples
       const OUTPUT_LEFT = 0; //expected neural output for turning left
       const OUTPUT_RIGHT = 1; //expected neural output for turning right
       const OUTPUT_THRESHHOLD = 0.01; //how close prediction must be to commit to a turn
@@ -411,7 +411,7 @@
         //use the neural network to rotate and shoot
         if (AUTOMATION_ON){
 
-          //compute the closest asteroid
+          // //compute the closest asteroid
           // let c = 0; //closest index
           // let dist0 = distBetweenPoints(ship.x, ship.y, roids[0].x, roids[0].y);
           // for (let i = 1; i < roids.length; i++){
@@ -426,14 +426,13 @@
           var closest_asteroids = [];
           for (let i = 0; i < roids.length; i++){
             let disti = distBetweenPoints(ship.x, ship.y, roids[i].x, roids[i].y);
-            if (disti < IMMEDIATE_RADIUS){
-              closest_asteroids.push([i, disti]);
-            }
+            // if (disti < IMMEDIATE_RADIUS){
+            closest_asteroids.push([i, disti]);
+            // }
           }
 
           //sort closest_asteroids in ascending order
           closest_asteroids.sort(function(a, b){return a[1] - b[1]});
-          // console.log(closest_asteroids[0][0])
           c = closest_asteroids[0][0]
 
           //check which asteroids will hit within closest_asteroids
@@ -443,6 +442,7 @@
 
           //function to check if asteroid will collide with ship
           // function Colliding(ax, ay, a)
+
 
           //make a prediction based on current data
           let ax = roids[c].x;
