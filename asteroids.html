@@ -455,7 +455,6 @@
             let centers_slope = (sy - ay) / (sx - ax); //slope of line connecting centers
             let vel_slope = ayv / axv; //slope of asteroid velocity direction
             let size = ROIDS_SIZE / ar;
-            // let size = Math.pow((ROIDS_SIZE / ar), -1);
             if (centers_slope >= 0.1 * size * vel_slope && 0.1 * size * centers_slope <=  vel_slope){
               return true;
             } else {
