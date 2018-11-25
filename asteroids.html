@@ -40,13 +40,13 @@
       const SHOW_CENTER_DOT = false; //show or hide ship's center dot
       const TEXT_FADE_TIME = 2.5; //text fade time in seconds
       const TEXT_SIZE = 40; //text size in pixels
-      const SOUND_ON = true;
-      const MUSIC_ON = true;
-      const GAME_SPEED = 10; // 1000 for normal; 10 for fast forward
+      const SOUND_ON = false;
+      const MUSIC_ON = false;
+      const GAME_SPEED = 1000; // 1000 for normal; 10 for fast forward
 
       //neural network parameters
       const NUM_INPUTS = 4;
-      const NUM_HIDDEN = 10;
+      const NUM_HIDDEN = 100;
       const NUM_OUTPUTS = 1;
       const NUM_SAMPLES = 1000000; //number of training samples
       const OUTPUT_LEFT = 0; //expected neural output for turning left
@@ -451,6 +451,9 @@
           //function to check if asteroid will collide with ship by comparing
           //slope of line between asteroid and ship to slope of velociy of
           //asteroid adjusted for radii
+
+          //PROBLEM: asteroid might have same slope but be moving away - that causes
+          //targeting of asteroid that's not yet harmful
           function Colliding(sx, sy, ax, ay, ar, axv, ayv){
             //ship radius = SHIP_SIZE / 2
             //slope of line connecting centers
