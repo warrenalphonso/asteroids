@@ -48,17 +48,17 @@
       const TEXT_SIZE = 40; //text size in pixels
       const SOUND_ON = false;
       const MUSIC_ON = false;
-      const GAME_SPEED = 1000; // 1000 for normal; 10 for fast forward
+      const GAME_SPEED = 10; // 1000 for normal; 10 for fast forward
 
       //neural network parameters
       const NUM_INPUTS = 4;
       const NUM_HIDDEN = 100;
       const NUM_OUTPUTS = 1;
-      const NUM_SAMPLES = 10000; //number of training samples
+      const NUM_SAMPLES = 100000; //number of training samples
       const OUTPUT_LEFT = 0; //expected neural output for turning left
       const OUTPUT_RIGHT = 1; //expected neural output for turning right
       const OUTPUT_THRESHHOLD = 0.01; //how close prediction must be to commit to a turn
-      const RATE_OF_FIRE = 30; //shots per second
+      const RATE_OF_FIRE = 50; //shots per second
       const IMMEDIATE_RADIUS = 100; //radius within which neural network prioritizes asteroid on path to hit
 
       /**@type {HTMLCanvasElement} */
