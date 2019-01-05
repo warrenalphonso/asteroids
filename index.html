@@ -41,7 +41,7 @@
       const TURN_SPEED = 360; //turn speed in degrees per second
 
       //developer flags
-      const AUTOMATION_ON = false; //set up neural network
+      const AUTOMATION_ON = true; //set up neural network
       const SHOW_BOUNDING = false; // show or hide collision bounding
       const SHOW_CENTER_DOT = false; //show or hide ship's center dot
       const TEXT_FADE_TIME = 2.5; //text fade time in seconds
@@ -54,7 +54,7 @@
       const NUM_INPUTS = 4;
       const NUM_HIDDEN = 100;
       const NUM_OUTPUTS = 1;
-      const NUM_SAMPLES = 1000000; //number of training samples
+      const NUM_SAMPLES = 10000; //number of training samples
       const OUTPUT_LEFT = 0; //expected neural output for turning left
       const OUTPUT_RIGHT = 1; //expected neural output for turning right
       const OUTPUT_THRESHHOLD = 0.01; //how close prediction must be to commit to a turn
