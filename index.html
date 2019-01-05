@@ -6,11 +6,17 @@
     <title>Asteroids</title>
     <style></style>
     <script type = 'text/javascript' src = './neural-network.js'></script>
+    <link rel="stylesheet" href="main.css" />
 </head>
 
 <body>
-  <canvas id='gameCanvas' width = '700' height = '500'></canvas>
+  <canvas id='gameCanvas'></canvas>
+  <div></div>
+  <button>Hi</button>
   <script>
+      document.getElementById('gameCanvas').width = screen.width / 1.5;
+      document.getElementById('gameCanvas').height = screen.height / 1.5;
+
       const FPS = 60; //frames per second
       const FRICTION = 0.7; //friction coefficient of space
       const GAME_LIVES = 3; //starting number of lives
@@ -35,7 +41,7 @@
       const TURN_SPEED = 360; //turn speed in degrees per second
 
       //developer flags
-      const AUTOMATION_ON = true; //set up neural network
+      const AUTOMATION_ON = false; //set up neural network
       const SHOW_BOUNDING = false; // show or hide collision bounding
       const SHOW_CENTER_DOT = false; //show or hide ship's center dot
       const TEXT_FADE_TIME = 2.5; //text fade time in seconds
