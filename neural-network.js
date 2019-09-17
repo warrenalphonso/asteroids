@@ -151,6 +151,7 @@ function sigmoid(x, deriv = false){
   }
   return 1 / (1 + Math.exp(-x));
 }
+
 /***********
 *MATRIX FUNCTIONS
 ************/
